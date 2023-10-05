@@ -408,6 +408,22 @@ filegroup {
     ],
 }
 
+cc_defaults {
+    name: "libgui_defaults",
+    double_loadable: true,
+
+    defaults: ["libgui_bufferqueue-defaults"],
+
+    static_libs: [
+        "libgui_aidl_static",
+        "libgui_window_info_static",
+    ],
+    export_static_lib_headers: [
+        "libgui_aidl_static",
+        "libgui_window_info_static",
+    ],
+}
+
 // Common build config shared by libgui and libgui_bufferqueue_static.
 cc_defaults {
     name: "libgui_bufferqueue-defaults",
@@ -504,6 +520,23 @@ cc_library_static {
         "mock/GraphicBufferConsumer.cpp",
         "mock/GraphicBufferProducer.cpp",
     ],
+}
+
+cc_library_shared {
+    name: "libgui",
+    vendor_available: true,
+    vndk: {
+        enabled: true,
+        private: true,
+    },
+    double_loadable: true,
+    defaults: ["libgui_defaults"]
+}
+
+cc_library_shared {
+    name: "libgui_vendor",
+    vendor: true,
+    defaults: ["libgui_defaults"]
 }
 
 subdirs = ["tests"]
